@@ -463,9 +463,7 @@ footer .footer-above {
 }
 
 .carousel-control.left, .carousel-control.right {
-    top: 50%;
-    transform: translateY(-50%);
-    height: auto;
+    place-content: center;
 }
 
 .navbar-nav>.active>a {
