@@ -462,6 +462,12 @@ footer .footer-above {
     transform: rotate(90deg);
 }
 
+.carousel-control.left, .carousel-control.right {
+    top: 50%;
+    transform: translateY(-50%);
+    height: auto;
+}
+
 .navbar-nav>.active>a {
     background-color: #{{ site.color.secondary-dark }} !important;
 }
