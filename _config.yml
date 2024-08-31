@@ -1,10 +1,9 @@
 # Site settings
 title: Paul Muscat
 email: paulmusc770@gmail.com
-url: https://github.com/jeromelachaud/freelancer-theme
-description: "Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description."
+description: "Paul Muscat Portfolio"
 keywords: "your keywords, separated by commas"
-skills: "Game Development"
+skills: "Game Development - 3D Modelling"
 meta_author: Muscat Paul
 
 # Google webmaster tools
@@ -32,10 +31,7 @@ color:
 
 # Footer settings
 footer:
-  copyright: Dr. Henry Jekyll
-  location: Location
   social: Around the Web
-  credits: Credits
 
 # Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
 social:
