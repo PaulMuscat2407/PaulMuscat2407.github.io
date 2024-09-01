@@ -4,5 +4,5 @@ modal-id: 1
 date: 2024-08-23
 img: Sword.png
 alt: image-alt
-description: Use this area of the page to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.
+description: my first Blender project, where I followed a tutorial to create a detailed 3D sword. This project introduced me to the basics of Blender and helped me understand fundamental techniques in 3D modeling and rendering.
 ---

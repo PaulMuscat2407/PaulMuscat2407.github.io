@@ -4,5 +4,5 @@ modal-id: 2
 date: 2024-08-24
 img: Room Render.png
 alt: image-alt
-description: Use this area of the page to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.
+description:  is my second Blender project, where I followed a tutorial to create a simple, stylized room. This project helped me learn how to use Blender more effectively and improve my skills in 3D modeling and rendering.
 ---

@@ -4,5 +4,5 @@ modal-id: 7
 date: 2024-08-29
 img: game.png
 alt: image-alt
-description: Use this area of the page to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.
+description: Hey,That's My Fish! is a digital rendition of the classic board game "Hey, That's My Fish" using Unity and Proton Services, which I developed for a home assignment.
 ---

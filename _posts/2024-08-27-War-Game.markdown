@@ -4,5 +4,5 @@ modal-id: 5
 date: 2024-08-27
 img: cake.png
 alt: image-alt
-description: Use this area of the page to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.
+description: A home assignment where I recreated the classic card game War. The project involved implementing data tracking and multiplayer capabilities using Firebase for data analysis, and Unity Netcode for managing game objects and player interactions. This setup allows for real-time gameplay and efficient tracking of game data.
 ---

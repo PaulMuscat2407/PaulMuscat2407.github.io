@@ -7,5 +7,5 @@ images:
     - submarine.png
     - safe.png
 alt: image-alt
-description: Use this area of the page to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.
+description: For my Undergraduate Thesis Project, I explored the application of Generative Pre-Trained Transformers (GPTs) in video game AI, specifically focusing on enhancing NPC behavior and dialogue generation. The research demonstrated how GPTs could be utilized to create more dynamic and contextually appropriate interactions within a game environment. This implementation showcased the potential of GPTs to improve the realism and immersion of player experiences through advanced AI-driven communication.
 ---

@@ -4,5 +4,5 @@ modal-id: 6
 date: 2024-08-28
 img: circus.png
 alt: image-alt
-description: Use this area of the page to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.
+description:  I developed a hunting game where players track and hunt animals in a natural environment. The animals follow simple routines, such as feeding, drinking, and resting, and move between different areas to meet these needs. They have basic sensory abilities, like sight and sound, which allow them to detect the player's presence. Depending on the type of animal, their reactions vary; predators might chase the player, while prey will flee if they sense danger. The game emphasizes straightforward, realistic animal behaviors to create an engaging hunting experience.
 ---
