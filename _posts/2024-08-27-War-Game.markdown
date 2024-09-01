@@ -3,6 +3,12 @@ layout: default
 modal-id: 5
 date: 2024-08-27
 img: cake.png
+images:
+    - War-1.png
+    - War-5.png
+    - War-2.png
+    - War-3.png
+    - War-4.png
 alt: image-alt
 description: A home assignment where I recreated the classic card game War. The project involved implementing data tracking and multiplayer capabilities using Firebase for data analysis, and Unity Netcode for managing game objects and player interactions. This setup allows for real-time gameplay and efficient tracking of game data.
 ---
