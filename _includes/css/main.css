@@ -462,14 +462,12 @@ footer .footer-above {
     transform: rotate(90deg);
 }
 
-.carousel-control.left, .carousel-control.right {
-    place-content: center;
-}
 
 .navbar-nav>.active>a {
     background-color: #{{ site.color.secondary-dark }} !important;
 }
 
+.car
 /* Fix modal mouse wheel issues */
 /* https://github.com/twbs/bootstrap/issues/16297 */
 .modal.fade.in {
