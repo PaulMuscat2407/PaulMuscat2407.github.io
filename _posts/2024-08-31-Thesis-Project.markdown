@@ -2,7 +2,7 @@
 layout: default
 modal-id: 9
 date: 2024-08-31
-img: submarine.png
+img: Thesis.png
 images:
     - Thesis-1.png
     - Thesis-2.png

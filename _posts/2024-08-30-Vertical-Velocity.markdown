@@ -2,7 +2,7 @@
 layout: default
 modal-id: 8
 date: 2024-08-30
-img: safe.png
+img: Vertical.png
 images:
     - Vertical-1.png
     - Vertical-2.png
