@@ -2,7 +2,7 @@
 layout: default
 modal-id: 5
 date: 2024-08-27
-img: cake.png
+img: War.png
 images:
     - War-1.PNG
     - War-5.PNG

@@ -2,7 +2,7 @@
 layout: default
 modal-id: 7
 date: 2024-08-29
-img: game.png
+img: Penguin.png
 images:
     - Penguin-1.png
     - Penguin-2.png

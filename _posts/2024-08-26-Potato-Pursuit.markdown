@@ -2,7 +2,7 @@
 layout: default
 modal-id: 4
 date: 2024-08-26
-img: cabin.png
+img: Potato-Pursuit.png
 images:
     - Potato-1.png
     - Potato-2.png

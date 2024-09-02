@@ -2,7 +2,7 @@
 layout: default
 modal-id: 6
 date: 2024-08-28
-img: circus.png
+img: Hunt.png
 images:
     - Hunt-1.png
     - Hunt-2.png
