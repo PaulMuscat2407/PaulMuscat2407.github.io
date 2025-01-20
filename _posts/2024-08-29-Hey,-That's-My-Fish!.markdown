@@ -11,5 +11,5 @@ images:
     - Penguin-5.png
     - Penguin-6.png
 alt: image-alt
-description: Hey,That's My Fish! is a digital rendition of the classic board game "Hey, That's My Fish" using Unity and Proton Services, which I developed for a home assignment.
+description: Hey,That's My Fish! is a digital recreation of the classic board game Hey, That’s My Fish! designed specifically for mobile devices. The game features full multiplayer functionality, implemented using Proton Services to ensure seamless online gameplay.
 ---

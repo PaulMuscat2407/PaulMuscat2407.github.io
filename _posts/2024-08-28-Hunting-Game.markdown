@@ -10,5 +10,8 @@ images:
     - Hunt-4.png
     - Hunt-5.png
 alt: image-alt
-description:  I developed a hunting game where players track and hunt animals in a natural environment. The animals follow simple routines, such as feeding, drinking, and resting, and move between different areas to meet these needs. They have basic sensory abilities, like sight and sound, which allow them to detect the player's presence. Depending on the type of animal, their reactions vary; predators might chase the player, while prey will flee if they sense danger. The game emphasizes straightforward, realistic animal behaviors to create an engaging hunting experience.
+description:  Inspired by games like Call of the Wild, I developed a hunting game to explore and recreate some of its core mechanics in a simplified form. The project features:
+    • Weapon Ballistics System: A basic system where different ammunition types vary in travel distance, damage, and drop-off over time, simulating realistic weapon behavior.
+    • Animal Behavioral Patterns: Animals follow routines such as eating, sleeping, and drinking, dynamically moving between designated hotspots to fulfill these needs.
+    • Sensory Detection: Animals are equipped with sight and hearing, enabling them to respond to the player’s actions. Prey will flee when sensing danger, while predators may choose to attack.
 ---
