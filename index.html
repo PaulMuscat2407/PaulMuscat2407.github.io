@@ -399,6 +399,9 @@
   .ghkey{width:56px;height:48px;border-radius:10px;border:none;color:#fff;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:18px;cursor:pointer;display:grid;place-items:center;transition:transform .06s}
   .ghkey:active{transform:scale(.92)}
   .ghint{font-size:12px;color:var(--faint);font-family:"Space Grotesk",sans-serif;margin-top:8px}
+  .icps{font-size:12px;color:var(--faint);font-weight:600;font-family:"Space Grotesk",sans-serif;margin-top:2px}
+  .gfrog{text-align:center}
+  .gfcanvas{border:1.5px solid var(--line);border-radius:10px;touch-action:none}
 </style>
 
 <div class="wrap">
@@ -753,12 +756,19 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     window.scrollTo({top:0,behavior:"smooth"});
   }
 
+  const _optOrder={};
+  function displayOrder(q){
+    if(!_optOrder[q.num]){ const a=q.options.map((_,i)=>i);
+      for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; }
+      _optOrder[q.num]=a; }
+    return _optOrder[q.num].map(i=>q.options[i]);
+  }
   function renderChoiceQ(q, body, answered){
     const multi = q.type==="multi";
     let picks = new Set(state.picks[q.num]||[]);
     const opts = el("div","opts");
     const optEls = {};
-    q.options.forEach(o=>{
+    displayOrder(q).forEach(o=>{
       const b = el("button","opt"+(picks.has(o.letter)&&!answered?" sel":""));
       b.appendChild(el("span","key",o.letter));
       b.appendChild(el("span","body",escapeHtml(o.text)));
@@ -973,6 +983,7 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     if(id==="match")return '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="7" height="16" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="4" width="7" height="16" rx="1.5" stroke="currentColor" stroke-width="1.7"/></svg>';
     if(id==="idle") return brainIcon();
     if(id==="snake")return '<svg viewBox="0 0 24 24" fill="none"><path d="M5 7h7a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="19" cy="7" r="1.5" fill="currentColor"/></svg>';
+    if(id==="frog")  return '<svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="15" rx="8" ry="6" stroke="currentColor" stroke-width="1.7"/><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.7"/><circle cx="17" cy="7" r="3" stroke="currentColor" stroke-width="1.7"/></svg>';
     if(id==="guitar")return '<svg viewBox="0 0 24 24" fill="none"><path d="M9 3v6M15 3v6M5 9h14l-2 11H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="15" r="2" stroke="currentColor" stroke-width="1.5"/></svg>';
     if(id==="fish") return '<svg viewBox="0 0 24 24" fill="none"><path d="M3 12c3-5 9-6 13-3l4-2-1 5 1 5-4-2c-4 3-10 2-13-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="9" cy="11" r="1" fill="currentColor"/></svg>';
     return "";
@@ -987,6 +998,7 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     { id:"idle",  need:10, name:"AI Token Idle", blurb:"Mine tokens by clicking, then buy upgrades that earn on their own.", launch:gameIdle },
     { id:"snake", need:15, name:"Data Snake",    blurb:"Steer the snake to swallow data packets \u2014 don't bite yourself.", launch:gameSnake },
     { id:"guitar",need:12, name:"Note Crusher",  blurb:"Hit falling notes as they cross the line \u2014 Guitar Hero style.",  launch:gameGuitar },
+    { id:"frog",  need:18, name:"Road Hopper",   blurb:"Hop across the busy road to reach the goal \u2014 Frogger style.",     launch:gameFrog },
   ];
   function gdata(id){ state.games=state.games||{}; state.games[id]=state.games[id]||{}; return state.games[id]; }
   function seenList(){ state.games=state.games||{}; state.games._seen=state.games._seen||[]; return state.games._seen; }
@@ -994,7 +1006,7 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
   function pendingCount(){ const s=seenList(); return GAMES.filter(g=>unlocked(g)&&s.indexOf(g.id)<0).length; }
   function bestLabel(id,b){ if(b==null) return "Tap to play";
     if(id==="pop")return "Best: "+b+" pops"; if(id==="match")return "Best: "+b+" moves";
-    if(id==="idle")return "Best: "+fmtNum(b)+" tokens"; if(id==="snake")return "Best: "+b+" long"; if(id==="fish")return "Caught: "+b; if(id==="guitar")return "Best: "+b+" pts"; return "Best: "+b; }
+    if(id==="idle")return "Best: "+fmtNum(b)+" tokens"; if(id==="snake")return "Best: "+b+" long"; if(id==="fish")return "Caught: "+b; if(id==="guitar")return "Best: "+b+" pts"; if(id==="frog")return "Best: level "+b; return "Best: "+b; }
 
   function refreshArcadeBtn(){
     const b=document.getElementById("bArcade"); if(!b) return;
@@ -1027,7 +1039,7 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     (function(){ const sc=el("button","gcard"); const uc=SKINS.filter(skinUnlocked).length+CURSORS.filter(curUnlocked).length, tot=SKINS.length+CURSORS.length;
       sc.innerHTML='<div class="gicon">'+paletteIcon()+'</div><div class="gmeta"><div class="gname">Skins &amp; Cursors</div><div class="gblurb">Re-skin the whole site and your mouse cursor. Unlock looks from milestones &amp; high scores.</div><div class="gstat">'+uc+' of '+tot+' unlocked</div></div>';
       sc.onclick=()=>showSkins(); grid.appendChild(sc); })();
-    GAMES.forEach(g=>{
+    GAMES.slice().sort((a,b)=>a.need-b.need).forEach(g=>{
       const ok=unlocked(g); const card=el("button","gcard"+(ok?"":" locked"));
       const stat = ok ? bestLabel(g.id, gdata(g.id).best) : ("Locked \u2014 reach a streak of "+g.need);
       card.innerHTML='<div class="gicon">'+gameIcon(g.id)+'</div>'+
@@ -1130,13 +1142,16 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     if(g.lastSeen){ const dt=Math.min(7200,(Date.now()-g.lastSeen)/1000); welcome=Math.floor(perSec()*dt); g.tokens+=welcome; }
     g.lastSeen=Date.now();
     const wrap=el("div","gidle");
-    wrap.innerHTML='<div class="itok" id="itok">0</div><div class="irate" id="irate">0 / sec</div>'+
+    wrap.innerHTML='<div class="itok" id="itok">0</div><div class="irate" id="irate">0 / sec</div><div class="icps" id="icps">0 CPS \u00b7 best 0</div>'+
       (welcome>0?'<div class="iwelcome">While you were away: +'+fmtNum(welcome)+' tokens</div>':'')+
       '<button class="ibig" id="ibig">'+brainIcon()+'<b>Train model</b><i id="ipow">+1</i></button>'+
       '<div class="ishop" id="ishop"></div>';
     body.appendChild(wrap);
     const tok=wrap.querySelector("#itok"), rate=wrap.querySelector("#irate"), shop=wrap.querySelector("#ishop"),
-          big=wrap.querySelector("#ibig"), powEl=wrap.querySelector("#ipow");
+          big=wrap.querySelector("#ibig"), powEl=wrap.querySelector("#ipow"), cpsEl=wrap.querySelector("#icps");
+    g.bestCps=g.bestCps||0; let clickTimes=[];
+    function paintCps(){ const now=Date.now(); clickTimes=clickTimes.filter(t=>now-t<1000); const c=clickTimes.length;
+      if(c>(g.bestCps||0)){ g.bestCps=c; checkSkinUnlocks(); } cpsEl.textContent=c+" CPS \u00b7 best "+(g.bestCps||0); }
     function paintAfford(){ const it=shop.querySelectorAll(".ishopItem"); if(!it.length)return;
       it[0].classList.toggle("cant", g.tokens<clickCost());
       GENS.forEach((x,i)=>{ if(it[i+1]) it[i+1].classList.toggle("cant", g.tokens<genCost(x)); }); }
@@ -1154,9 +1169,9 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
         shop.appendChild(it); });
       paintAfford();
     }
-    big.onclick=()=>{ g.tokens+=clickPow(); paint(); big.classList.remove("tap"); void big.offsetWidth; big.classList.add("tap"); };
+    big.onclick=()=>{ g.tokens+=clickPow(); clickTimes.push(Date.now()); paintCps(); paint(); big.classList.remove("tap"); void big.offsetWidth; big.classList.add("tap"); };
     renderShop(); paint();
-    const tick=setInterval(()=>{ g.tokens+=perSec()*0.2; paint(); },200);
+    const tick=setInterval(()=>{ g.tokens+=perSec()*0.2; paint(); paintCps(); },200);
     const saver=setInterval(()=>{ g.lastSeen=Date.now(); save(); },4000);
     return ()=>{ clearInterval(tick); clearInterval(saver); g.lastSeen=Date.now(); save(); };
   }
@@ -1364,6 +1379,25 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     { id:"star",     name:"Rockstar",     req:"Max combo 30 in Note Crusher",  cond:()=>(gdata("guitar").maxCombo||0)>=30, svg:'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 3l4 9 10 1-7.5 6.5L24.5 29 16 24l-8.5 5 2-9.5L2 13l10-1z" fill="#FFD23F" stroke="#9A6810" stroke-width="2" stroke-linejoin="round"/></svg>', hx:16, hy:3 },
   ];
   CURSORS.forEach(c=>{ if(c.svg&&!c.url) c.url=curURL(c.svg,c.hx,c.hy); });
+  // ---- CPS + Frogger skins & cursors ----
+  SKINS.push(
+    { id:"overclock", name:"Overclock", req:"Hit 10 CPS in AI Token Idle", cond:()=>(gdata("idle").bestCps||0)>=10, swatch:["#00E5FF","#06121A","#0C2230"],
+      vars:{"--paper":"#06121A","--surface":"#0C2230","--surface-2":"#123442","--ink":"#DDF6FF","--muted":"#8FC4D6","--faint":"#5C8696","--line":"#1E4256","--line-2":"#163542","--azure":"#00E5FF","--azure-dk":"#6FF2FF","--azure-tint":"#0A3848","--ok":"#34D399","--ok-tint":"#0E3328","--ok-line":"#256B53","--no":"#FF5C7A","--no-tint":"#3A1525","--no-line":"#7A2C45","--amber":"#FFD23F","--amber-tint":"#33290F"} },
+    { id:"lilypad", name:"Lily Pad", req:"Reach level 5 in Road Hopper", cond:()=>(gdata("frog").best||0)>=5, swatch:["#3FB36B","#E8F3E8","#14301C"],
+      vars:{"--paper":"#E8F3E8","--surface":"#FFFFFF","--surface-2":"#EFF7EE","--ink":"#14301C","--muted":"#4F6B52","--faint":"#87A089","--line":"#D4E6D2","--line-2":"#E5F0E3","--azure":"#3FB36B","--azure-dk":"#1F6B41","--azure-tint":"#DEF1E2"} }
+  );
+  CURSORS.push(
+    { id:"fastclick", name:"Fast Click", req:"Hit 6 CPS in AI Token Idle", cond:()=>(gdata("idle").bestCps||0)>=6,
+      svg:'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect x="11" y="4" width="11" height="21" rx="5.5" fill="#3B9BE8" stroke="#111" stroke-width="2"/><path d="M16.5 6v6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M25 8l5-2M25 14h5M25 20l5 2" stroke="#3B9BE8" stroke-width="2" stroke-linecap="round"/></svg>', hx:16, hy:14 },
+    { id:"turbo", name:"Turbo", req:"Hit 12 CPS in AI Token Idle", cond:()=>(gdata("idle").bestCps||0)>=12,
+      svg:'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M19 3c1 6-4 7-4 12a5 5 0 0 0 10 0c0-3-2-4-2-7 3 2 5 5 5 9a9 9 0 1 1-15-7c3-3 5-5 6-8z" fill="#FF7B2E" stroke="#9A3A0F" stroke-width="1.6" stroke-linejoin="round"/><path d="M2 11h7M0 17h6M3 23h7" stroke="#FF7B2E" stroke-width="2" stroke-linecap="round"/></svg>', hx:18, hy:16 },
+    { id:"frogc", name:"Frog", req:"Reach level 3 in Road Hopper", cond:()=>(gdata("frog").best||0)>=3,
+      svg:'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><ellipse cx="16" cy="20" rx="12" ry="9" fill="#3FB36B" stroke="#1f6b41" stroke-width="2"/><circle cx="9" cy="9" r="5" fill="#3FB36B" stroke="#1f6b41" stroke-width="2"/><circle cx="23" cy="9" r="5" fill="#3FB36B" stroke="#1f6b41" stroke-width="2"/><circle cx="9" cy="9" r="2" fill="#111"/><circle cx="23" cy="9" r="2" fill="#111"/><path d="M11 22q5 4 10 0" stroke="#1f6b41" stroke-width="2" fill="none" stroke-linecap="round"/></svg>', hx:16, hy:16 },
+    { id:"carc", name:"Race Car", req:"Reach level 8 in Road Hopper", cond:()=>(gdata("frog").best||0)>=8,
+      svg:'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M4 21l3-9h18l3 9v5H4z" fill="#C12A45" stroke="#111" stroke-width="2" stroke-linejoin="round"/><path d="M9 13h14" stroke="#111" stroke-width="1.5"/><rect x="7" y="15" width="18" height="4" rx="1" fill="#fff" opacity=".45"/><circle cx="10" cy="26" r="3" fill="#111"/><circle cx="22" cy="26" r="3" fill="#111"/></svg>', hx:16, hy:18 }
+  );
+  CURSORS.forEach(c=>{ if(c.svg&&!c.url) c.url=curURL(c.svg,c.hx,c.hy); });
+
   function curUnlocked(c){ return c.id==="default" || (c.cond && c.cond()); }
   function applyCursor(id){
     const c=CURSORS.filter(x=>x.id===id)[0]||CURSORS[0]; state.cursor=id;
@@ -1749,6 +1783,69 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     const onKey=e=>{ if(!running) return; const i=KEYS.indexOf(e.key.toUpperCase()); if(i>=0){ hitLane(i); e.preventDefault(); } };
     document.addEventListener("keydown",onKey);
     overlay(wrap,"Note Crusher","","Hit the falling notes as they cross the line.\nKeys: D F J K",start,"Play");
+    return ()=>{ cancelAnimationFrame(loop); running=false; document.removeEventListener("keydown",onKey); };
+  }
+
+  // ---- Road Hopper (Frogger) ----
+  function gameFrog(body){
+    const gd=gdata("frog"); gd.best=gd.best||0;
+    const COLS=9, ROWS=11, Wbase=297;
+    const wrap=el("div","gfrog"); wrap.style.position="relative";
+    const hud=el("div","ghud"); const lv=el("span",null,"Level: 1"); const lives=el("span",null,"Lives: 3");
+    hud.appendChild(lv); hud.appendChild(lives);
+    const cv=document.createElement("canvas"); cv.className="gfcanvas"; const dpad=el("div","dpad");
+    wrap.appendChild(hud); wrap.appendChild(cv); wrap.appendChild(dpad); body.appendChild(wrap);
+    const avail=Math.min(Wbase,(body.clientWidth||340)-8); const cell=Math.max(22,Math.floor(avail/COLS));
+    const W=cell*COLS, H=cell*ROWS; const dpr=window.devicePixelRatio||1;
+    cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+"px"; cv.style.height=H+"px";
+    const ctx=cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0);
+    let level=1, lifeCount=3, frog={c:(COLS/2)|0,r:ROWS-1}, lanes=[], running=false, loop=null, lastT=0;
+    function buildLanes(){
+      lanes=[];
+      for(let r=1;r<=ROWS-2;r++){
+        const dir=r%2===0?1:-1;
+        const speed=cell*(1.1+0.22*(level-1)+Math.random()*0.6)*dir;
+        const carW=cell*(0.8+Math.random()*0.6);
+        const gap=cell*(2.0+Math.random()*1.6)+carW;
+        const cars=[]; let x=Math.random()*gap;
+        while(x<W+gap){ cars.push(x); x+=gap; }
+        lanes.push({r,speed,carW,cars});
+      }
+    }
+    function reset(){ frog={c:(COLS/2)|0,r:ROWS-1}; }
+    function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+    function carX(cx,carW){ const m=W+carW; return ((cx%m)+m)%m - carW; }
+    function draw(){
+      ctx.fillStyle=getCss("--surface-2"); ctx.fillRect(0,0,W,H);
+      ctx.fillStyle=getCss("--ok-tint"); ctx.fillRect(0,0,W,cell);
+      ctx.fillStyle=getCss("--ok"); ctx.font="bold "+Math.floor(cell*0.4)+"px 'Space Grotesk',sans-serif"; ctx.textAlign="center"; ctx.fillText("GOAL",W/2,cell*0.64);
+      ctx.fillStyle=getCss("--surface"); ctx.fillRect(0,(ROWS-1)*cell,W,cell);
+      lanes.forEach(L=>{ ctx.fillStyle=getCss("--no");
+        L.cars.forEach(cx=>{ rr(carX(cx,L.carW),L.r*cell+cell*0.16,L.carW,cell*0.68,5); ctx.fill(); }); });
+      const fx=frog.c*cell, fy=frog.r*cell;
+      ctx.fillStyle=getCss("--ok"); rr(fx+cell*0.12,fy+cell*0.12,cell*0.76,cell*0.76,6); ctx.fill();
+      ctx.fillStyle="#fff"; ctx.beginPath(); ctx.arc(fx+cell*0.36,fy+cell*0.33,cell*0.1,0,6.28); ctx.arc(fx+cell*0.64,fy+cell*0.33,cell*0.1,0,6.28); ctx.fill();
+      ctx.fillStyle="#111"; ctx.beginPath(); ctx.arc(fx+cell*0.36,fy+cell*0.33,cell*0.05,0,6.28); ctx.arc(fx+cell*0.64,fy+cell*0.33,cell*0.05,0,6.28); ctx.fill();
+    }
+    function move(dc,dr){ if(!running)return; frog.c=Math.max(0,Math.min(COLS-1,frog.c+dc)); frog.r=Math.max(0,Math.min(ROWS-1,frog.r+dr));
+      if(frog.r===0){ level++; lv.textContent="Level: "+level; if(level-1>gd.best){ gd.best=level-1; checkSkinUnlocks(); } buildLanes(); reset(); save(); } draw(); }
+    function hit(){ const L=lanes.find(l=>l.r===frog.r); if(!L) return false;
+      const fxc=frog.c*cell+cell*0.5; return L.cars.some(cx=>{ const x=carX(cx,L.carW); return fxc>x && fxc<x+L.carW; }); }
+    function tick(ts){ if(!running)return; const dt=Math.min(50,ts-lastT); lastT=ts;
+      lanes.forEach(L=>{ for(let i=0;i<L.cars.length;i++) L.cars[i]+=L.speed*dt/1000; });
+      if(hit()){ lifeCount--; lives.textContent="Lives: "+lifeCount; reset(); if(lifeCount<=0) return gameover(); }
+      draw(); loop=requestAnimationFrame(tick); }
+    function start(){ [...wrap.querySelectorAll(".gstart")].forEach(o=>o.remove()); level=1; lifeCount=3; lv.textContent="Level: 1"; lives.textContent="Lives: 3"; buildLanes(); reset(); running=true; lastT=performance.now(); loop=requestAnimationFrame(tick); }
+    function gameover(){ running=false; cancelAnimationFrame(loop); if(level-1>gd.best) gd.best=level-1; save(); checkSkinUnlocks();
+      overlay(wrap,"Splat!","Level "+level,"Best: level "+gd.best,()=>{ body.innerHTML=""; gameCleanup=gameFrog(body); }); }
+    [["\u25B2",0,-1,"up"],["\u25C0",-1,0,"left"],["\u25B6",1,0,"right"],["\u25BC",0,1,"down"]].forEach(a=>{ const b=el("button","dbtn "+a[3],a[0]); b.onclick=()=>move(a[1],a[2]); dpad.appendChild(b); });
+    const onKey=e=>{ const k=e.key;
+      if(k==="ArrowUp"||k==="w"){ move(0,-1); e.preventDefault(); }
+      else if(k==="ArrowDown"||k==="s"){ move(0,1); e.preventDefault(); }
+      else if(k==="ArrowLeft"||k==="a"){ move(-1,0); e.preventDefault(); }
+      else if(k==="ArrowRight"||k==="d"){ move(1,0); e.preventDefault(); } };
+    document.addEventListener("keydown",onKey);
+    overlay(wrap,"Road Hopper","","Cross the road \u2014 reach GOAL to level up.\nArrows / WASD or the pad.",start,"Play");
     return ()=>{ cancelAnimationFrame(loop); running=false; document.removeEventListener("keydown",onKey); };
   }
 
