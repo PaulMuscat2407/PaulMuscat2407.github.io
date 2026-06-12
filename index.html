@@ -771,7 +771,6 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     const ABCD="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     displayOrder(q).forEach((o,idx)=>{
       const displayLetter = ABCD[idx]||o.letter;
-    displayOrder(q).forEach(o=>{
       const b = el("button","opt"+(picks.has(o.letter)&&!answered?" sel":""));
       b.appendChild(el("span","key",displayLetter));
       b.appendChild(el("span","body",escapeHtml(o.text)));
