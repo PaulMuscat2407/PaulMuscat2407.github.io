@@ -768,9 +768,15 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     let picks = new Set(state.picks[q.num]||[]);
     const opts = el("div","opts");
     const optEls = {};
+<<<<<<< HEAD
+    const ABCD="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    displayOrder(q).forEach((o,idx)=>{
+      const displayLetter = ABCD[idx]||o.letter;
+=======
     displayOrder(q).forEach(o=>{
+>>>>>>> c81f378a318c7b37a5c6bcb5b4976e22aa763630
       const b = el("button","opt"+(picks.has(o.letter)&&!answered?" sel":""));
-      b.appendChild(el("span","key",o.letter));
+      b.appendChild(el("span","key",displayLetter));
       b.appendChild(el("span","body",escapeHtml(o.text)));
       optEls[o.letter]=b;
       b.onclick = ()=>{
