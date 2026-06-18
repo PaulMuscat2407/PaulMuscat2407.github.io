@@ -402,6 +402,33 @@
   .icps{font-size:12px;color:var(--faint);font-weight:600;font-family:"Space Grotesk",sans-serif;margin-top:2px}
   .gfrog{text-align:center}
   .gfcanvas{border:1.5px solid var(--line);border-radius:10px;touch-action:none}
+  /* ===== Pixel Pet (Tamagotchi) ===== */
+  .gpet{text-align:center}
+  .pettitle{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:17px;margin-bottom:16px}
+  .petpicks{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .petpick{border:1.5px solid var(--line);border-radius:14px;background:var(--surface);padding:16px 14px;width:150px;text-align:center;transition:border-color .13s,background .13s}
+  .petpick:hover{border-color:var(--azure);background:var(--azure-tint)}
+  .petprev{width:100px;height:100px;margin:0 auto 10px}
+  .petprev svg{width:100%;height:100%}
+  .petpname{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:15px}
+  .petpdesc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .petdisplay{width:140px;height:140px;margin:6px auto 4px;transition:transform .2s}
+  .petdisplay svg{width:100%;height:100%;filter:drop-shadow(0 4px 10px rgba(0,0,0,.12))}
+  .petdisplay.petbounce{animation:petbn .35s ease}
+  @keyframes petbn{0%{transform:scale(1)}40%{transform:scale(1.12) translateY(-6px)}100%{transform:scale(1)}}
+  .petname{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:16px;margin:2px 0 12px}
+  .petstats{display:flex;flex-direction:column;gap:8px;max-width:280px;margin:0 auto 14px}
+  .pstat{display:flex;align-items:center;gap:10px}
+  .pslabel{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:11.5px;color:var(--muted);width:72px;text-align:right}
+  .psbar{flex:1;height:10px;border-radius:999px;background:var(--line);overflow:hidden}
+  .psfill{height:100%;border-radius:999px;transition:width .4s}
+  .psfill.hunger{background:linear-gradient(90deg,#FF6B35,#FFB347)}
+  .psfill.happy{background:linear-gradient(90deg,#FF69B4,#FFB6C1)}
+  .psfill.energy{background:linear-gradient(90deg,#4CAF50,#8BC34A)}
+  .petactions{display:flex;gap:8px;justify-content:center;margin:4px 0 10px}
+  .petbtn{padding:9px 18px;font-size:13px}
+  .petdead{font-size:13px;color:var(--no);font-weight:600;font-family:"Space Grotesk",sans-serif;margin:12px 0;padding:10px 14px;background:var(--no-tint);border:1px solid var(--no-line);border-radius:10px}
+  .petdead button{margin-top:8px}
 </style>
 
 <div class="wrap">
@@ -985,6 +1012,7 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     if(id==="match")return '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="7" height="16" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="4" width="7" height="16" rx="1.5" stroke="currentColor" stroke-width="1.7"/></svg>';
     if(id==="idle") return brainIcon();
     if(id==="snake")return '<svg viewBox="0 0 24 24" fill="none"><path d="M5 7h7a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="19" cy="7" r="1.5" fill="currentColor"/></svg>';
+    if(id==="pet")   return '<svg viewBox="0 0 24 24" fill="none"><path d="M12 21c-4 0-7-3-7-7 0-2 1-4 3-5l1-5h6l1 5c2 1 3 3 3 5 0 4-3 7-7 7z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="9.5" cy="13" r="1.2" fill="currentColor"/><circle cx="14.5" cy="13" r="1.2" fill="currentColor"/></svg>';
     if(id==="frog")  return '<svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="15" rx="8" ry="6" stroke="currentColor" stroke-width="1.7"/><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.7"/><circle cx="17" cy="7" r="3" stroke="currentColor" stroke-width="1.7"/></svg>';
     if(id==="guitar")return '<svg viewBox="0 0 24 24" fill="none"><path d="M9 3v6M15 3v6M5 9h14l-2 11H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="15" r="2" stroke="currentColor" stroke-width="1.5"/></svg>';
     if(id==="fish") return '<svg viewBox="0 0 24 24" fill="none"><path d="M3 12c3-5 9-6 13-3l4-2-1 5 1 5-4-2c-4 3-10 2-13-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="9" cy="11" r="1" fill="currentColor"/></svg>';
@@ -1001,6 +1029,7 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     { id:"snake", need:15, name:"Data Snake",    blurb:"Steer the snake to swallow data packets \u2014 don't bite yourself.", launch:gameSnake },
     { id:"guitar",need:12, name:"Note Crusher",  blurb:"Hit falling notes as they cross the line \u2014 Guitar Hero style.",  launch:gameGuitar },
     { id:"frog",  need:18, name:"Road Hopper",   blurb:"Hop across the busy road to reach the goal \u2014 Frogger style.",     launch:gameFrog },
+    { id:"pet",   need:5,  name:"Pixel Pet",     blurb:"Adopt and care for a virtual pet \u2014 feed, play, and keep it alive.", launch:gamePet },
   ];
   function gdata(id){ state.games=state.games||{}; state.games[id]=state.games[id]||{}; return state.games[id]; }
   function seenList(){ state.games=state.games||{}; state.games._seen=state.games._seen||[]; return state.games._seen; }
@@ -1008,7 +1037,7 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
   function pendingCount(){ const s=seenList(); return GAMES.filter(g=>unlocked(g)&&s.indexOf(g.id)<0).length; }
   function bestLabel(id,b){ if(b==null) return "Tap to play";
     if(id==="pop")return "Best: "+b+" pops"; if(id==="match")return "Best: "+b+" moves";
-    if(id==="idle")return "Best: "+fmtNum(b)+" tokens"; if(id==="snake")return "Best: "+b+" long"; if(id==="fish")return "Caught: "+b; if(id==="guitar")return "Best: "+b+" pts"; if(id==="frog")return "Best: level "+b; return "Best: "+b; }
+    if(id==="idle")return "Best: "+fmtNum(b)+" tokens"; if(id==="snake")return "Best: "+b+" long"; if(id==="fish")return "Caught: "+b; if(id==="guitar")return "Best: "+b+" pts"; if(id==="frog")return "Best: level "+b; if(id==="pet")return "Age: "+b+"h"; return "Best: "+b; }
 
   function refreshArcadeBtn(){
     const b=document.getElementById("bArcade"); if(!b) return;
@@ -1388,6 +1417,19 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     { id:"lilypad", name:"Lily Pad", req:"Reach level 5 in Road Hopper", cond:()=>(gdata("frog").best||0)>=5, swatch:["#3FB36B","#E8F3E8","#14301C"],
       vars:{"--paper":"#E8F3E8","--surface":"#FFFFFF","--surface-2":"#EFF7EE","--ink":"#14301C","--muted":"#4F6B52","--faint":"#87A089","--line":"#D4E6D2","--line-2":"#E5F0E3","--azure":"#3FB36B","--azure-dk":"#1F6B41","--azure-tint":"#DEF1E2"} }
   );
+  // pet skins + cursors
+  SKINS.push(
+    { id:"pastel", name:"Pastel", req:"Keep a pet alive for 10 hours", cond:()=>(gdata("pet").best||0)>=10, swatch:["#FF69B4","#FFF0F5","#4A2040"],
+      vars:{"--paper":"#FFF0F5","--surface":"#FFFFFF","--surface-2":"#FFF5F8","--ink":"#4A2040","--muted":"#8A5A72","--faint":"#B88DA0","--line":"#F0D4E0","--line-2":"#F8E8EF","--azure":"#FF69B4","--azure-dk":"#D44A94","--azure-tint":"#FFE8F2"} }
+  );
+  CURSORS.push(
+    { id:"paw", name:"Paw Print", req:"Keep a pet alive for 5 hours", cond:()=>(gdata("pet").best||0)>=5,
+      svg:'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><ellipse cx="16" cy="22" rx="8" ry="6" fill="#FF69B4" stroke="#111" stroke-width="1.8"/><circle cx="10" cy="12" r="3.5" fill="#FF69B4" stroke="#111" stroke-width="1.5"/><circle cx="22" cy="12" r="3.5" fill="#FF69B4" stroke="#111" stroke-width="1.5"/><circle cx="6" cy="18" r="3" fill="#FF69B4" stroke="#111" stroke-width="1.5"/><circle cx="26" cy="18" r="3" fill="#FF69B4" stroke="#111" stroke-width="1.5"/></svg>', hx:16, hy:22 },
+    { id:"heart", name:"Heart", req:"Keep a pet alive for 24 hours", cond:()=>(gdata("pet").best||0)>=24,
+      svg:'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 28l-1.5-1.3C7 20.5 3 17 3 12.5 3 9 5.9 6 9.5 6c2 0 4 1 5.5 2.5C16.5 7 18.5 6 20.5 6 24.1 6 27 9 27 12.5c0 4.5-4 8-11.5 14.2z" fill="#FF4D6A" stroke="#111" stroke-width="2"/></svg>', hx:16, hy:16 }
+  );
+  CURSORS.forEach(c=>{ if(c.svg&&!c.url) c.url=curURL(c.svg,c.hx,c.hy); });
+
   CURSORS.push(
     { id:"fastclick", name:"Fast Click", req:"Hit 6 CPS in AI Token Idle", cond:()=>(gdata("idle").bestCps||0)>=6,
       svg:'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect x="11" y="4" width="11" height="21" rx="5.5" fill="#3B9BE8" stroke="#111" stroke-width="2"/><path d="M16.5 6v6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M25 8l5-2M25 14h5M25 20l5 2" stroke="#3B9BE8" stroke-width="2" stroke-linecap="round"/></svg>', hx:16, hy:14 },
@@ -1849,6 +1891,182 @@ const QUESTIONS = [{"num": 1, "type": "single", "question": "A company employs a
     document.addEventListener("keydown",onKey);
     overlay(wrap,"Road Hopper","","Cross the road \u2014 reach GOAL to level up.\nArrows / WASD or the pad.",start,"Play");
     return ()=>{ cancelAnimationFrame(loop); running=false; document.removeEventListener("keydown",onKey); };
+  }
+
+  // ---- Pixel Pet (Tamagotchi) ----
+  function gamePet(body){
+    const g=gdata("pet");
+    const PETS=[
+      { id:"bitbot", name:"Bitbot", desc:"A loyal robot pup. Easy to care for.",
+        svg:function(mood){ const eyes=mood==="dead"?"x  x":mood==="sad"?"u  u":mood==="sick"?"@  @":"o  o";
+          const mouth=mood==="happy"?"\\___/":mood==="sad"?"/---\\":mood==="sick"?"~~~~~":"_____";
+          return '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">'+
+            '<rect x="30" y="20" width="60" height="52" rx="12" fill="#5B9BD5" stroke="#3A6FA0" stroke-width="3"/>'+
+            '<rect x="22" y="28" width="14" height="20" rx="5" fill="#5B9BD5" stroke="#3A6FA0" stroke-width="2.5"/>'+
+            '<rect x="84" y="28" width="14" height="20" rx="5" fill="#5B9BD5" stroke="#3A6FA0" stroke-width="2.5"/>'+
+            '<circle cx="47" cy="42" r="6" fill="#fff"/><circle cx="73" cy="42" r="6" fill="#fff"/>'+
+            '<circle cx="47" cy="43" r="3" fill="'+(mood==="dead"?"#999":"#222")+'"/><circle cx="73" cy="43" r="3" fill="'+(mood==="dead"?"#999":"#222")+'"/>'+
+            (mood==="happy"?'<path d="M50 56q10 8 20 0" stroke="#3A6FA0" stroke-width="2.5" fill="none" stroke-linecap="round"/>':
+             mood==="sad"?'<path d="M50 60q10-6 20 0" stroke="#3A6FA0" stroke-width="2.5" fill="none" stroke-linecap="round"/>':
+             mood==="sick"?'<path d="M48 58q3 2 6-1 3 3 6 1 3 2 6-1" stroke="#8B4513" stroke-width="2" fill="none" stroke-linecap="round"/>':
+             mood==="dead"?'<path d="M48 58h24" stroke="#999" stroke-width="2.5" stroke-linecap="round"/>':
+             '<path d="M48 57h24" stroke="#3A6FA0" stroke-width="2.5" stroke-linecap="round"/>')+
+            '<rect x="40" y="72" width="12" height="18" rx="4" fill="#5B9BD5" stroke="#3A6FA0" stroke-width="2.5"/>'+
+            '<rect x="68" y="72" width="12" height="18" rx="4" fill="#5B9BD5" stroke="#3A6FA0" stroke-width="2.5"/>'+
+            '<path d="M86 38q14-4 16 8" stroke="#5B9BD5" stroke-width="4" fill="none" stroke-linecap="round"/>'+
+            (mood==="happy"?'<path d="M55 16l5-8 5 8" fill="#FFD23F" stroke="#C98A1A" stroke-width="1.5"/>':'')+
+            '</svg>'; } },
+      { id:"cloudkit", name:"Cloudkit", desc:"A fluffy cloud kitten. Loves attention.",
+        svg:function(mood){
+          return '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">'+
+            '<ellipse cx="60" cy="60" rx="38" ry="32" fill="#F0F0F0" stroke="#C8C8C8" stroke-width="2.5"/>'+
+            '<circle cx="35" cy="36" r="14" fill="#F0F0F0" stroke="#C8C8C8" stroke-width="2.5"/>'+
+            '<circle cx="85" cy="36" r="14" fill="#F0F0F0" stroke="#C8C8C8" stroke-width="2.5"/>'+
+            '<path d="M30 38l-6-16 14 8z" fill="'+(mood==="happy"?"#FFB6C1":"#F0F0F0")+'" stroke="#C8C8C8" stroke-width="2"/>'+
+            '<path d="M90 38l6-16-14 8z" fill="'+(mood==="happy"?"#FFB6C1":"#F0F0F0")+'" stroke="#C8C8C8" stroke-width="2"/>'+
+            '<circle cx="48" cy="55" r="5" fill="#fff"/><circle cx="72" cy="55" r="5" fill="#fff"/>'+
+            '<circle cx="48" cy="56" r="2.8" fill="'+(mood==="dead"?"#999":"#333")+'"/>'+
+            '<circle cx="72" cy="56" r="2.8" fill="'+(mood==="dead"?"#999":"#333")+'"/>'+
+            (mood==="happy"?'<path d="M52 66q8 7 16 0" stroke="#C8C8C8" stroke-width="2.5" fill="none" stroke-linecap="round"/>':
+             mood==="sad"?'<path d="M52 70q8-5 16 0" stroke="#C8C8C8" stroke-width="2.5" fill="none" stroke-linecap="round"/>':
+             mood==="sick"?'<ellipse cx="60" cy="67" rx="5" ry="4" fill="#9DC89D" opacity=".6"/>':
+             mood==="dead"?'<path d="M52 67h16" stroke="#999" stroke-width="2.5" stroke-linecap="round"/>':
+             '<path d="M56 66h8" stroke="#C8C8C8" stroke-width="2.5" stroke-linecap="round"/>')+
+            '<path d="M55 64l5 3 5-3" stroke="#FFB6C1" stroke-width="2" fill="none" stroke-linecap="round"/>'+
+            '<path d="M38 62h-12M82 62h12M38 58h-8M82 58h8" stroke="#DDD" stroke-width="1.5" stroke-linecap="round"/>'+
+            '<ellipse cx="40" cy="62" rx="6" ry="4" fill="#FFB6C1" opacity=".35"/>'+
+            '<ellipse cx="80" cy="62" rx="6" ry="4" fill="#FFB6C1" opacity=".35"/>'+
+            '</svg>'; } },
+      { id:"datadrake", name:"Datadrake", desc:"A tiny data dragon. Fiery and fun.",
+        svg:function(mood){
+          return '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">'+
+            '<ellipse cx="60" cy="65" rx="30" ry="26" fill="#5CB85C" stroke="#3D8B3D" stroke-width="2.5"/>'+
+            '<circle cx="60" cy="40" r="22" fill="#5CB85C" stroke="#3D8B3D" stroke-width="2.5"/>'+
+            '<path d="M42 24l-4-14 10 8z" fill="#FF6B35" stroke="#CC4E1F" stroke-width="1.5"/>'+
+            '<path d="M54 20l2-16 6 12z" fill="#FF6B35" stroke="#CC4E1F" stroke-width="1.5"/>'+
+            '<path d="M68 22l6-14 2 12z" fill="#FF6B35" stroke="#CC4E1F" stroke-width="1.5"/>'+
+            '<circle cx="50" cy="38" r="5" fill="#FFFDE0"/><circle cx="70" cy="38" r="5" fill="#FFFDE0"/>'+
+            '<ellipse cx="50" cy="39" rx="2.5" ry="3.5" fill="'+(mood==="dead"?"#999":"#8B0000")+'"/>'+
+            '<ellipse cx="70" cy="39" rx="2.5" ry="3.5" fill="'+(mood==="dead"?"#999":"#8B0000")+'"/>'+
+            (mood==="happy"?'<path d="M52 50q8 7 16 0" stroke="#3D8B3D" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M62 48l6-6 3 8" fill="#FF6B35" stroke="#CC4E1F" stroke-width="1"/>':
+             mood==="sad"?'<path d="M52 54q8-5 16 0" stroke="#3D8B3D" stroke-width="2.5" fill="none" stroke-linecap="round"/>':
+             mood==="sick"?'<path d="M52 51q4 2 8 0 4 2 8 0" stroke="#8B4513" stroke-width="2" fill="none"/>':
+             mood==="dead"?'<path d="M52 51h16" stroke="#999" stroke-width="2.5" stroke-linecap="round"/>':
+             '<path d="M54 50h12" stroke="#3D8B3D" stroke-width="2.5" stroke-linecap="round"/>')+
+            '<path d="M34 58q-12 6-8 18" stroke="#5CB85C" stroke-width="5" fill="none" stroke-linecap="round"/>'+
+            '<path d="M86 58q12 6 8 18" stroke="#5CB85C" stroke-width="5" fill="none" stroke-linecap="round"/>'+
+            '<path d="M88 75l6 3-2 5-6-2z" fill="#5CB85C" stroke="#3D8B3D" stroke-width="1.5"/>'+
+            '<path d="M48 88v10M60 90v10M72 88v10" stroke="#5CB85C" stroke-width="5" stroke-linecap="round"/>'+
+            '</svg>'; } }
+    ];
+    const STAT_DECAY_PER_MIN=0.35;
+    const MAX=100;
+    function mood(h,p,e){ const avg=(h+p+e)/3; if(avg<=0) return "dead"; if(avg<20) return "sick"; if(avg<40) return "sad"; if(avg>=70) return "happy"; return "neutral"; }
+    function clamp(v){ return Math.max(0,Math.min(MAX,v)); }
+
+    // apply offline decay
+    if(g.petId && g.lastSeen){
+      const mins=Math.min(1440,(Date.now()-g.lastSeen)/60000);
+      const decay=mins*STAT_DECAY_PER_MIN;
+      g.hunger=clamp((g.hunger||50)-decay);
+      g.happiness=clamp((g.happiness||50)-decay);
+      g.energy=clamp((g.energy||50)-decay);
+      g.age=(g.age||0)+Math.floor(mins/60);
+    }
+    g.lastSeen=Date.now();
+
+    const wrap=el("div","gpet");
+
+    if(!g.petId){
+      // pet selection screen
+      wrap.innerHTML='<div class="pettitle">Choose your companion</div><div class="petpicks" id="petpicks"></div>';
+      body.appendChild(wrap);
+      const picks=wrap.querySelector("#petpicks");
+      PETS.forEach(p=>{
+        const card=el("button","petpick");
+        card.innerHTML='<div class="petprev">'+p.svg("happy")+'</div><div class="petpname">'+p.name+'</div><div class="petpdesc">'+p.desc+'</div>';
+        card.onclick=()=>{
+          g.petId=p.id; g.hunger=80; g.happiness=80; g.energy=80; g.age=0; g.lastSeen=Date.now(); g.best=0;
+          save(); body.innerHTML=""; gameCleanup=gamePet(body);
+        };
+        picks.appendChild(card);
+      });
+      return ()=>{};
+    }
+
+    // active pet screen
+    const pet=PETS.find(p=>p.id===g.petId)||PETS[0];
+    const m=mood(g.hunger||0,g.happiness||0,g.energy||0);
+
+    wrap.innerHTML=
+      '<div class="ghud"><span id="petage">Age: '+(g.age||0)+'h</span><span id="petmood">'+m+'</span></div>'+
+      '<div class="petdisplay" id="petdisplay">'+pet.svg(m)+'</div>'+
+      '<div class="petname" id="petnamedisp">'+pet.name+'</div>'+
+      '<div class="petstats">'+
+        '<div class="pstat"><div class="pslabel">Hunger</div><div class="psbar"><div class="psfill hunger" id="phunger" style="width:'+g.hunger+'%"></div></div></div>'+
+        '<div class="pstat"><div class="pslabel">Happiness</div><div class="psbar"><div class="psfill happy" id="phappy" style="width:'+g.happiness+'%"></div></div></div>'+
+        '<div class="pstat"><div class="pslabel">Energy</div><div class="psbar"><div class="psfill energy" id="penergy" style="width:'+g.energy+'%"></div></div></div>'+
+      '</div>'+
+      '<div class="petactions" id="petactions">'+
+        '<button class="btn primary petbtn" id="pfeed">Feed</button>'+
+        '<button class="btn primary petbtn" id="pplay">Play</button>'+
+        '<button class="btn primary petbtn" id="prest">Rest</button>'+
+      '</div>'+
+      (m==="dead"?'<div class="petdead">Your pet has passed away. <button class="btn ghost" id="pnew">Adopt a new pet</button></div>':'')+
+      '<div class="ghint" id="pethint">Keep all three stats up to keep your pet happy. Stats decay over time, even when you\'re away.</div>';
+    body.appendChild(wrap);
+
+    const display=wrap.querySelector("#petdisplay"), moodEl=wrap.querySelector("#petmood"),
+          hBar=wrap.querySelector("#phunger"), pBar=wrap.querySelector("#phappy"), eBar=wrap.querySelector("#penergy"),
+          ageEl=wrap.querySelector("#petage"), hintEl=wrap.querySelector("#pethint");
+    const feedBtn=wrap.querySelector("#pfeed"), playBtn=wrap.querySelector("#pplay"), restBtn=wrap.querySelector("#prest");
+    const newBtn=wrap.querySelector("#pnew");
+
+    function paint(){
+      const m2=mood(g.hunger,g.happiness,g.energy);
+      display.innerHTML=pet.svg(m2);
+      moodEl.textContent=m2;
+      hBar.style.width=g.hunger+"%"; pBar.style.width=g.happiness+"%"; eBar.style.width=g.energy+"%";
+      ageEl.textContent="Age: "+(g.age||0)+"h";
+      if(m2==="dead"){
+        if(!wrap.querySelector(".petdead")){
+          const dd=el("div","petdead"); dd.innerHTML='Your pet has passed away. <button class="btn ghost" id="pnew2">Adopt a new pet</button>';
+          wrap.querySelector("#petactions").after(dd);
+          dd.querySelector("#pnew2").onclick=resetPet;
+        }
+        feedBtn.disabled=playBtn.disabled=restBtn.disabled=true;
+      }
+      // track best age
+      if((g.age||0)>(g.best||0)){ g.best=g.age; checkSkinUnlocks(); }
+    }
+    function doAction(stat,amount,cost,otherStat,otherAmount){
+      if(mood(g.hunger,g.happiness,g.energy)==="dead") return;
+      g[stat]=clamp(g[stat]+amount);
+      if(otherStat) g[otherStat]=clamp(g[otherStat]+(otherAmount||0));
+      save(); paint();
+      // animate
+      display.classList.remove("petbounce"); void display.offsetWidth; display.classList.add("petbounce");
+    }
+    if(feedBtn) feedBtn.onclick=()=>doAction("hunger",25,"energy",-5);
+    if(playBtn) playBtn.onclick=()=>{ doAction("happiness",20); g.energy=clamp(g.energy-10); save(); paint(); };
+    if(restBtn) restBtn.onclick=()=>doAction("energy",25);
+    function resetPet(){ delete g.petId; delete g.hunger; delete g.happiness; delete g.energy; delete g.age;
+      save(); body.innerHTML=""; gameCleanup=gamePet(body); }
+    if(newBtn) newBtn.onclick=resetPet;
+
+    // decay tick every 10s (= 0.167 min)
+    const decayTick=setInterval(()=>{
+      if(mood(g.hunger,g.happiness,g.energy)==="dead") return;
+      const d=STAT_DECAY_PER_MIN*(10/60);
+      g.hunger=clamp(g.hunger-d); g.happiness=clamp(g.happiness-d); g.energy=clamp(g.energy-d);
+      g.age=(g.age||0)+ (10/3600); // add fraction of hour
+      g.age=Math.round(g.age*10)/10;
+      paint();
+    },10000);
+    const saveTick=setInterval(()=>{ g.lastSeen=Date.now(); save(); },8000);
+
+    paint();
+    return ()=>{ clearInterval(decayTick); clearInterval(saveTick); g.lastSeen=Date.now(); save(); };
   }
 
   // ---- boot ----
